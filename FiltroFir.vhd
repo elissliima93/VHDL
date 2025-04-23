@@ -12,7 +12,7 @@ ENTITY FiltroFIR IS
 end FiltroFIR;
 
 ARCHITECTURE Behaviour OF FiltroFIR IS
-    -- Tipos corrigidos
+    
     TYPE arrayC IS ARRAY (2 DOWNTO 0) OF STD_LOGIC_VECTOR(3 DOWNTO 0); -- Coeficientes (4 bits)
     TYPE arrayM IS ARRAY (2 DOWNTO 0) OF STD_LOGIC_VECTOR(7 DOWNTO 0); -- Produtos (8 bits)
     TYPE arrayS IS ARRAY (1 DOWNTO 0) OF STD_LOGIC_VECTOR(7 DOWNTO 0); -- Somas (8 bits)
@@ -60,7 +60,7 @@ BEGIN
     END PROCESS;
 	
 	
-    -- Multiplicação
+    -- MultiplicaÃ§Ã£o
     PROCESS(clk)
     BEGIN
         IF rising_edge(clk) THEN
@@ -79,7 +79,7 @@ BEGIN
         END IF;
     END PROCESS;
 
-    -- Saída
+    -- SaÃ­da
     Y <= S(1);
 
 END Behaviour;
