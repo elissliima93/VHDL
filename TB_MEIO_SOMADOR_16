@@ -1,0 +1,69 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity tb_meio_somador is
+end tb_meio_somador;
+
+architecture sim of tb_meio_somador is
+
+    -- Sinais de entrada comuns
+    signal A, B : std_logic;
+
+    -- Sinais de saída separados para cada módulo
+    signal Soma1, Carry1 : std_logic;
+    signal Soma2, Carry2 : std_logic;
+    signal Soma3, Carry3 : std_logic;
+    signal Soma4, Carry4 : std_logic;
+
+    -- Componentes dos quatro meios somadores
+    component meio_somador1
+        port ( A, B : in std_logic;
+               Soma, Carry : out std_logic );
+    end component;
+
+    component meio_somador2
+        port ( A, B : in std_logic;
+               Soma, Carry : out std_logic );
+    end component;
+
+    component meio_somador3
+        port ( A, B : in std_logic;
+               Soma, Carry : out std_logic );
+    end component;
+
+    component meio_somador4
+        port ( A, B : in std_logic;
+               Soma, Carry : out std_logic );
+    end component;
+
+begin
+
+    -- Instanciando os módulos
+    U1: meio_somador1 port map (A => A, B => B, Soma => Soma1, Carry => Carry1);
+    U2: meio_somador2 port map (A => A, B => B, Soma => Soma2, Carry => Carry2);
+    U3: meio_somador3 port map (A => A, B => B, Soma => Soma3, Carry => Carry3);
+    U4: meio_somador4 port map (A => A, B => B, Soma => Soma4, Carry => Carry4);
+
+    -- Processo de estímulo
+    stim_proc: process
+    begin
+        -- Teste 1: A = 0, B = 0
+        A <= '0'; B <= '0';
+        wait for 10 ns;
+
+        -- Teste 2: A = 0, B = 1
+        A <= '0'; B <= '1';
+        wait for 10 ns;
+
+        -- Teste 3: A = 1, B = 0
+        A <= '1'; B <= '0';
+        wait for 10 ns;
+
+        -- Teste 4: A = 1, B = 1
+        A <= '1'; B <= '1';
+        wait for 10 ns;
+
+        wait;  -- finaliza simulação
+    end process;
+
+end sim;
