@@ -24,4 +24,4 @@ begin
     S    <= std_logic_vector(Soma(N-1 downto 0)); -- Parte da soma
     Cout <= Soma(N);                              -- Carry final
   end process;
-end comportamental;
+end comportamental; 
