@@ -1,0 +1,16 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity meio_somador1 is
+    port (
+        A, B  : in  std_logic;
+        Soma  : out std_logic;
+        Carry : out std_logic
+    );
+end meio_somador1;
+
+architecture comportamental of meio_somador1 is
+begin
+    Soma  <= A xor B;
+    Carry <= A and B;
+end comportamental;
