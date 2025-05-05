@@ -1,0 +1,36 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity xor_com_mux is
+  port (
+    A, B : in  STD_LOGIC;
+    F    : out STD_LOGIC
+  );
+end xor_com_mux;
+
+architecture behavior of xor_com_mux is
+  component multiplexador_4x1
+    port (
+      D0, D1, D2, D3 : in  STD_LOGIC;
+      S             : in  STD_LOGIC_VECTOR(1 downto 0);
+      Y             : out STD_LOGIC
+    );
+  end component;
+
+  signal sel : STD_LOGIC_VECTOR(1 downto 0);
+
+begin
+
+  sel <= A & B;
+
+  U1: multiplexador_4x1
+    port map (
+      D0 => '0',
+      D1 => '1',
+      D2 => '1',
+      D3 => '0',
+      S  => sel,
+      Y  => F
+    );
+
+end behavior;
