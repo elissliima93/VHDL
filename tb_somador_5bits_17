@@ -1,0 +1,34 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity tb_somador_5bits is
+end tb_somador_5bits;
+
+architecture testbench of tb_somador_5bits is
+  constant N : integer := 5;
+
+  -- Sinais de entrada
+  signal A, B  : STD_LOGIC_VECTOR(N-1 downto 0);
+  signal Cin   : STD_LOGIC;
+
+  -- Sinais de saída
+  signal S     : STD_LOGIC_VECTOR(N-1 downto 0);
+  signal Cout  : STD_LOGIC;
+
+begin
+
+  -- Instanciação do somador parametrizado de 5 bits
+  DUT: entity work.somador_comportamental_param
+    generic map (N => N)
+    port map (
+      A    => A,
+      B    => B,
+      Cin  => Cin,
+      S    => S,
+      Cout => Cout
+    );
+
+  stim_proc: process
+  begin
+    --
