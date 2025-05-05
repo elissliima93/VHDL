@@ -1,0 +1,27 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity somador_comportamental_param is
+  generic (
+    N : integer := 4  -- Número de bits do somador
+  );
+  port (
+    A     : in  STD_LOGIC_VECTOR(N-1 downto 0);  -- Entrada A
+    B     : in  STD_LOGIC_VECTOR(N-1 downto 0);  -- Entrada B
+    Cin   : in  STD_LOGIC;                      -- Carry de entrada
+    S     : out STD_LOGIC_VECTOR(N-1 downto 0); -- Soma
+    Cout  : out STD_LOGIC                       -- Carry de saída
+  );
+end somador_comportamental_param;
+
+architecture comportamental of somador_comportamental_param is
+begin
+  process (A, B, Cin)
+    variable Soma : UNSIGNED(N downto 0);  -- Resultado com carry (N+1 bits)
+  begin
+    Soma := unsigned(A) + unsigned(B) + to_unsigned(to_integer(unsigned(Cin)), 1);
+    S    <= std_logic_vector(Soma(N-1 downto 0)); -- Parte da soma
+    Cout <= Soma(N);                              -- Carry final
+  end process;
+end comportamental;
