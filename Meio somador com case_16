@@ -1,0 +1,32 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity meio_somador4 is
+    port (
+        A, B  : in  std_logic;
+        Soma  : out std_logic;
+        Carry : out std_logic
+    );
+end meio_somador4;
+
+architecture case_based of meio_somador4 is
+    signal AB : std_logic_vector(1 downto 0);
+begin
+    AB <= A & B;
+
+    process (AB)
+    begin
+        case AB is
+            when "00" =>
+                Soma <= '0'; Carry <= '0';
+            when "01" =>
+                Soma <= '1'; Carry <= '0';
+            when "10" =>
+                Soma <= '1'; Carry <= '0';
+            when "11" =>
+                Soma <= '0'; Carry <= '1';
+            when others =>
+                Soma <= 'X'; Carry <= 'X';
+        end case;
+    end process;
+end case_based;
