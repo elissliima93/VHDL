@@ -1,0 +1,16 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity meio_somador3 is
+    port (
+        A, B  : in  std_logic;
+        Soma  : out std_logic;
+        Carry : out std_logic
+    );
+end meio_somador3;
+
+architecture selecionada of meio_somador3 is
+begin
+    Soma  <= '0' when (A = B) else '1';
+    Carry <= '1' when (A = '1' and B = '1') else '0';
+end selecionada;
