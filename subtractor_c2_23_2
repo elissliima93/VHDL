@@ -1,0 +1,54 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+-- Entidade do subtrator usando complemento de 2
+entity subtractor_c2 is
+    port (
+        A    : in  std_logic_vector(3 downto 0);  -- Minuendo
+        B    : in  std_logic_vector(3 downto 0);  -- Subtraendo
+        Diff : out std_logic_vector(3 downto 0);  -- Resultado da subtração
+        Cout : out std_logic                      -- Carry de saída
+    );
+end subtractor_c2;
+
+-- Arquitetura que usa o somador parametrizado para implementar a subtração
+architecture rtl of subtractor_c2 is
+    signal B_inv : std_logic_vector(3 downto 0); -- B invertido (NOT B)
+    signal S     : std_logic_vector(3 downto 0); -- Resultado da soma
+    signal C_out : std_logic;                    -- Carry final do somador
+
+    -- Componente do somador parametrizado
+    component carry_lookahead_adder
+        generic (
+            N : integer := 4
+        );
+        port (
+            A    : in  std_logic_vector(N-1 downto 0);
+            B    : in  std_logic_vector(N-1 downto 0);
+            Cin  : in  std_logic;
+            Sum  : out std_logic_vector(N-1 downto 0);
+            Cout : out std_logic
+        );
+    end component;
+begin
+
+    -- Inverte os bits de B para usar o complemento de 2
+    B_inv <= not B;
+
+    -- Realiza A + (NOT B) + 1 = A - B
+    U1: carry_lookahead_adder
+        generic map (N => 4)
+        port map (
+            A    => A,
+            B    => B_inv,
+            Cin  => '1',      -- Soma 1 (complemento de dois)
+            Sum  => S,
+            Cout => C_out
+        );
+
+    -- Conecta as saídas
+    Diff <= S;
+    Cout <= C_out;
+
+end rtl;
