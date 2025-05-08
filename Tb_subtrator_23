@@ -1,0 +1,66 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+-- Entidade do testbench
+entity tb_subtractor is
+end tb_subtractor;
+
+-- Arquitetura de simulação
+architecture sim of tb_subtractor is
+
+    -- Sinais para os testes
+    signal A_tb, B_tb   : std_logic_vector(3 downto 0); -- Entradas
+    signal Diff_tb      : std_logic_vector(3 downto 0); -- Saída da subtração
+    signal Cout_tb      : std_logic;                    -- Carry de saída
+
+    -- Componente do subtrator a ser testado
+    component subtractor_c2
+        port (
+            A    : in  std_logic_vector(3 downto 0);
+            B    : in  std_logic_vector(3 downto 0);
+            Diff : out std_logic_vector(3 downto 0);
+            Cout : out std_logic
+        );
+    end component;
+
+begin
+
+    -- Instância do subtrator
+    DUT: subtractor_c2
+        port map (
+            A    => A_tb,
+            B    => B_tb,
+            Diff => Diff_tb,
+            Cout => Cout_tb
+        );
+
+    -- Processo de estímulo com vários testes
+    stimulus: process
+    begin
+        -- Teste 1: 5 - 3 = 2
+        A_tb <= "0101";  -- 5
+        B_tb <= "0011";  -- 3
+        wait for 10 ns;
+
+        -- Teste 2: 7 - 2 = 5
+        A_tb <= "0111";
+        B_tb <= "0010";
+        wait for 10 ns;
+
+        -- Teste 3: 2 - 7 = -5 → 1011
+        A_tb <= "0010";
+        B_tb <= "0111";
+        wait for 10 ns;
+
+        -- Teste 4: 0 - 1 = -1 → 1111
+        A_tb <= "0000";
+        B_tb <= "0001";
+        wait for 10 ns;
+
+        -- Fim da simulação
+        report "Testbench finalizado!" severity note;
+        wait;
+    end process;
+
+end sim;
