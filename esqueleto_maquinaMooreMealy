@@ -1,0 +1,82 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity detector_bit_consecutivo is
+	Port (clk: in STD_LOGIC;
+		  reset : in STD_LOGIC;
+		  a: in STD_LOGIC;
+		  saida : out STD_LOGIC);
+		  
+end detector_bit_consecutivo;
+
+architecture  Behavorial of detector_bit_consecutivo is
+
+type state is (e0,e1,e2,e3);
+signal current_state, next_state : state := e0;
+
+begin
+
+--processo 1- estado atual
+
+state_reg: process(clk, reset)
+begin
+
+	if rising_edge(clk) then
+		if reset='1' then
+			current_state <= initial_state;
+		else
+			current_state <= next_state;
+			
+		end if;
+	end if;
+	
+end process state_reg;
+
+--processo 2: lógica combinacional do proximo estado
+
+next_state_logic : process(current_state,input1,input2,...)
+begin
+	case current_state is
+		when state1 =>
+			if condition1 then
+				next_state <= state_value;
+			elsif condition2 then 
+				next_state <= state_value;
+			
+		--	...
+			else
+				next_state <= state_value;
+			end if;
+		when state2=>
+		--  ...
+		  
+	end case;
+end process next_state_logic;
+
+
+--processo 3: logica combinacional de saída
+
+output_logic: process(current_state_input1,input2,...)
+begin
+	case current_state is
+		when state1 =>
+			moore_output1 <= value;
+			moore_output2 <= value;
+	     --...
+			if condition1 then
+				mealy_output1 <= value;
+				mealy_output2 <= value;
+		-- ...
+		   elsif condition2 then
+		        mealy_output1 <= value;
+		--   ...
+		   else
+				mealy_output1 <= value;
+		--		...
+			end if;
+			
+		when state2 =>
+		--	...
+	end case;
+end process output_logic;
