@@ -1,0 +1,94 @@
+--Detector de sequência (FSM) de bits consecutivos moore
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity sequence_detector is
+    Port (
+        clk      : in  STD_LOGIC;
+        reset    : in  STD_LOGIC;
+        in_bit   : in  STD_LOGIC;
+        out_bit  : out STD_LOGIC
+    );
+end sequence_detector;
+
+architecture Behavioral of sequence_detector is
+
+    type state_type is (
+        reset_state,
+        read_1_zero,
+        read_1_one,
+        read_2_zero,
+        read_2_one
+    );
+
+    signal current_state, next_state : state_type;
+
+begin
+
+    -- Processo de estado atual
+    process(clk, reset)
+    begin
+        if reset = '1' then
+            current_state <= reset_state;
+        elsif rising_edge(clk) then
+            current_state <= next_state;
+        end if;
+    end process;
+
+    -- Processo de próxima transição e saída
+    process(current_state, in_bit)
+    begin
+        -- Valor padrão
+        next_state <= reset_state;
+        out_bit <= '0';
+
+        case current_state is
+
+            when reset_state =>
+                if in_bit = '0' then
+                    next_state <= read_1_zero;
+                else
+                    next_state <= read_1_one;
+                end if;
+
+            when read_1_zero =>
+                if in_bit = '0' then
+                    next_state <= read_2_zero;
+                    out_bit <= '1';
+                else
+                    next_state <= read_1_one;
+                end if;
+
+            when read_1_one =>
+                if in_bit = '1' then
+                    next_state <= read_2_one;
+                    out_bit <= '1';
+                else
+                    next_state <= read_1_zero;
+                end if;
+
+            when read_2_zero =>
+                if in_bit = '0' then
+                    next_state <= read_2_zero;
+                    out_bit <= '1';
+                else
+                    next_state <= read_1_one;
+                    out_bit <= '0';
+                end if;
+
+            when read_2_one =>
+                if in_bit = '1' then
+                    next_state <= read_2_one;
+                    out_bit <= '1';
+                else
+                    next_state <= read_1_zero;
+                    out_bit <= '0';
+                end if;
+
+        end case;
+    end process;
+
+end Behavioral;
